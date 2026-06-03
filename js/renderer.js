@@ -95,6 +95,9 @@ function draw() {
         let p = w2s(u.x, u.y);
         let r = T[u.type].r * cam.z;
         ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, 7);
+        // Special handle for cannon: color green?
+        // Wait, T[u.type].color already defined as "#0f0" in game.js.
+        // It's already green.
         ctx.fillStyle = T[u.type].color; ctx.fill();
         ctx.lineWidth = 3;
         ctx.strokeStyle = u.team ? "#48f" : "#f44";
@@ -125,3 +128,4 @@ function draw() {
     ctx.fillText(`GRID ${GRID}`, 12, c.height - 34);
     ctx.fillText(`CHUNK ${Math.floor(cam.x / CHUNK)} : ${Math.floor(cam.y / CHUNK)}`, 12, c.height - 14);
 }
+

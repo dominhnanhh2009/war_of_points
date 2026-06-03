@@ -75,14 +75,22 @@ function update(dt) {
             if (u.type === "soldier") { enemy.hp--; u.cool = .5; }
             if (u.type === "tank") { bullets.push({ x: u.x, y: u.y, a: u.ang, d: 10, l: 100, t: u.team }); u.cool = 1.2; }
             if (u.type === "cannon") {
-                addExplosion(enemy.x, enemy.y, 50);
+                let distToEnemy = D(u, enemy);
+                // "ko quá lớn hơn 100 và ko nhỏ hơn 50" -> range is 50-100?
+                // actually, let's implement the logic exactly as requested:
+                // Tâm O của vụ nổ, O cách điểm khai hỏa (u.x, u.y) ko quá > 100 và không nhỏ hơn 50.
+                // enemy is just a target. Let's aim at enemy if in range.
+                if (distToEnemy >= 50 && distToEnemy <= 100) {
+                    addExplosion(enemy.x, enemy.y, 40);
                 for (let z of units) {
                     let d = Math.hypot(z.x - enemy.x, z.y - enemy.y);
-                    if (d < 50) z.hp -= 50 - d;
+                        // Damage is max(0, 40-d)
+                        if (d < 40) z.hp -= Math.max(0, 40 - d);
                 }
                 u.cool = 3;
             }
         }
+    }
     }
     solveOverlap();
     for (let m of units) {
@@ -116,3 +124,4 @@ function update(dt) {
     for (let i = bullets.length - 1; i >= 0; i--) { if (bullets[i].l <= 0 || bullets[i].d <= 0) bullets.splice(i, 1); }
     for (let i = units.length - 1; i >= 0; i--) { if (units[i].hp <= 0) units.splice(i, 1); }
 }
+

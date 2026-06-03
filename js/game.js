@@ -11,10 +11,10 @@ let sel = [];
 let pendingSpawn = null;
 
 const T = {
-    soldier: { r: 1, hp: 1.5, spd: 3, range: 50, color: "#ff0", turn: 8 },
-    tank: { r: 2, hp: 30, spd: 5, range: 100, color: "#fa0", turn: 2 },
-    cannon: { r: 3, hp: 5, spd: .5, range: 100, color: "#0f0", turn: .7 },
-    mine: { r: 1, hp: 1, spd: 0, range: 0, color: "#888", turn: 0 }
+    soldier: { r: 1, hp: 1.5, spd: 3, range: 50, color: "#ff0", turn: 8, cost: 10 },
+    tank: { r: 2, hp: 30, spd: 5, range: 100, color: "#fa0", turn: 2, cost: 30 },
+    cannon: { r: 3, hp: 5, spd: .5, range: 100, color: "#0f0", turn: .7, cost: 50 },
+    mine: { r: 1, hp: 1, spd: 0, range: 0, color: "#888", turn: 0, cost: 5 }
 };
 
 function U(type, team, x, y) {
@@ -25,3 +25,4 @@ function U(type, team, x, y) {
 function D(a, b) {
     return Math.hypot(a.x - b.x, a.y - b.y);
 }
+
