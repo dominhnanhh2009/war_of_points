@@ -1,6 +1,7 @@
 let drag = false, middleDrag = false;
 let middleStartX = 0, middleStartY = 0, middleCamX = 0, middleCamY = 0;
 let start, rect = null;
+let lastMouseX = 0, lastMouseY = 0;
 
 function spawnMode(type, team) {
     pendingSpawn = { type, team };
@@ -40,6 +41,8 @@ c.onmousedown = e => {
 };
 
 onmousemove = e => {
+    lastMouseX = e.clientX;
+    lastMouseY = e.clientY;
     if (middleDrag) {
         cam.x = middleCamX - (e.clientX - middleStartX) / cam.z;
         cam.y = middleCamY - (e.clientY - middleStartY) / cam.z;
@@ -84,3 +87,4 @@ c.addEventListener("wheel", e => {
     }
     e.preventDefault();
 }, { passive: false });
+

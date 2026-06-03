@@ -108,12 +108,18 @@ function draw() {
         ctx.stroke();
         ctx.fillStyle = "#0f0";
         ctx.fillRect(p.x - 12, p.y - r - 8, 24 * (u.hp / u.max), 3);
-        ctx.fillStyle = "#9ff";
-        ctx.font = "11px monospace";
-        ctx.fillText(`C${Math.floor(u.x / CHUNK)},${Math.floor(u.y / CHUNK)} | ${Math.floor(u.x)},${Math.floor(u.y)}`, p.x + 10, p.y - 8);
         if (sel.includes(u)) {
             ctx.beginPath(); ctx.arc(p.x, p.y, r + 7, 0, 7);
             ctx.strokeStyle = "#fff"; ctx.stroke();
+
+            // Hiện vùng tấn công
+            let range = T[u.type].range * cam.z;
+            if (range > 0) {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, range, 0, 7);
+                ctx.strokeStyle = "rgba(255, 255, 255, 0.2)";
+                ctx.stroke();
+            }
         }
     }
     for (let b of bullets) {
@@ -123,6 +129,12 @@ function draw() {
     if (rect) {
         ctx.strokeStyle = "#fff"; ctx.strokeRect(rect.x, rect.y, rect.w, rect.h);
     }
+
+    // Hiện toạ độ của con trỏ chuột
+    let mouse = s2w(lastMouseX, lastMouseY);
+    ctx.fillStyle = "#fff"; ctx.font = "14px monospace";
+    ctx.fillText(`MOUSE ${Math.floor(mouse.x)},${Math.floor(mouse.y)}`, 12, c.height - 70);
+
     ctx.fillStyle = "#fff"; ctx.font = "14px monospace";
     ctx.fillText(`CAM ${cam.x.toFixed(0)} ${cam.y.toFixed(0)}`, 12, c.height - 52);
     ctx.fillText(`GRID ${GRID}`, 12, c.height - 34);
