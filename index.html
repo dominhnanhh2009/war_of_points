@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>War of Points – FINAL v4</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="ui">
+        <b>War of Points – FINAL v4</b><br>
+        Creative mode • Grid • Chunk • Explosion marker
+        <br><br>
+        <div id="spawnInfo">Spawn: OFF</div>
+        <button onclick="toggleHelp()">Help</button>
+        <div id="help">
+            Controls:<br>
+            LMB Drag → Select<br>
+            RMB → Move<br>
+            Wheel / Touchpad → Pan<br>
+            MMB Drag → Pan<br>
+            CTRL + Wheel → Zoom<br>
+            CTRL + SHIFT + Wheel → Rotate<br>
+            Spawn Mode + LMB → Place Unit<br>
+            ESC → Toggle Help<br><br>
+            Spawn Keys:
+            <table border="1" cellpadding="4" style="border-collapse:collapse;font-size:12px;margin-top:6px">
+                <tr><th>Key</th><th>Spawn</th></tr>
+                <tr><td>1</td><td>Soldier Red</td></tr>
+                <tr><td>2</td><td>Soldier Blue</td></tr>
+                <tr><td>3</td><td>Tank Red</td></tr>
+                <tr><td>4</td><td>Tank Blue</td></tr>
+                <tr><td>5</td><td>Cannon Red</td></tr>
+                <tr><td>6</td><td>Cannon Blue</td></tr>
+                <tr><td>7</td><td>Mine Red</td></tr>
+                <tr><td>8</td><td>Mine Blue</td></tr>
+            </table>
+        </div>
+    </div>
+
+    <canvas id="cv"></canvas>
+
+    <!-- JS Files -->
+    <script src="js/game.js"></script>
+    <script src="js/logic.js"></script>
+    <script src="js/renderer.js"></script>
+    <script src="js/input.js"></script>
+    <script src="js/main.js"></script>
+
+</body>
+</html>

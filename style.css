@@ -1,0 +1,35 @@
+html,
+body {
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
+    background: #111;
+    color: #ddd;
+    font-family: sans-serif
+}
+
+#ui {
+    position: fixed;
+    left: 10px;
+    top: 10px;
+    background: #000b;
+    padding: 10px;
+    border-radius: 12px;
+    z-index: 10;
+    max-width: 380px
+}
+
+button {
+    margin: 2px
+}
+
+#help {
+    margin-top: 8px;
+    font-size: 13px;
+    line-height: 1.45
+}
+
+#spawnInfo {
+    margin-top: 6px;
+    color: #8ff
+}
