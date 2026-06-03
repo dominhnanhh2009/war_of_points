@@ -94,22 +94,54 @@ function draw() {
     for (let u of units) {
         let p = w2s(u.x, u.y);
         let r = T[u.type].r * cam.z;
-        ctx.beginPath(); ctx.arc(p.x, p.y, r, 0, 7);
-        // Special handle for cannon: color green?
-        // Wait, T[u.type].color already defined as "#0f0" in game.js.
-        // It's already green.
+        let angle = u.ang + cam.r; // Góc quay của unit + góc xoay camera
+
+        ctx.save(); // Lưu trạng thái canvas
+        ctx.translate(p.x, p.y); // Di chuyển gốc tọa độ về tâm unit
+        ctx.rotate(angle); // Xoay canvas theo góc hướng của unit
+
+        // Vẽ shape dựa trên loại unit (tọa độ giờ đã được translate và rotate)
+        ctx.beginPath();
+        if (u.type === 'soldier') {
+            ctx.arc(0, 0, r, 0, 7);
+        } else if (u.type === 'tank') {
+            ctx.rect(-r, -r / 2, r * 2, r);
+        } else if (u.type === 'cannon') {
+            for (let i = 0; i < 6; i++) {
+                let a = i * Math.PI / 3;
+                let x = r * Math.cos(a);
+                let y = r * Math.sin(a);
+                if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+            }
+            ctx.closePath();
+        } else if (u.type === 'mine') {
+            ctx.moveTo(0, -r);
+            ctx.lineTo(r, 0);
+            ctx.lineTo(0, r);
+            ctx.lineTo(-r, 0);
+            ctx.closePath();
+        }
+
         ctx.fillStyle = T[u.type].color; ctx.fill();
         ctx.lineWidth = 3;
         ctx.strokeStyle = u.team ? "#48f" : "#f44";
         ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(p.x, p.y);
-        ctx.lineTo(p.x + Math.cos(u.ang + cam.r) * r * 2, p.y + Math.sin(u.ang + cam.r) * r * 2);
-        ctx.stroke();
+
+        // Vẽ nòng súng (cần xoay nên giờ chỉ cần vẽ thẳng ra)
+        if (u.type !== 'mine') {
+                ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(r * 1.5, 0);
+                ctx.stroke();
+            }
+        ctx.restore(); // Khôi phục trạng thái canvas trước đó
+
+        // Vẽ thanh máu (không cần xoay nên vẽ ngoài ctx.save/restore)
         ctx.fillStyle = "#0f0";
-        ctx.fillRect(p.x - 12, p.y - r - 8, 24 * (u.hp / u.max), 3);
+        ctx.fillRect(p.x - 12, p.y - r - 12, 24 * (u.hp / u.max), 3);
         if (sel.includes(u)) {
-            ctx.beginPath(); ctx.arc(p.x, p.y, r + 7, 0, 7);
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, r + 7, 0, 7);
             ctx.strokeStyle = "#fff"; ctx.stroke();
 
             // Hiện vùng tấn công
@@ -119,8 +151,8 @@ function draw() {
                 ctx.arc(p.x, p.y, range, 0, 7);
                 ctx.strokeStyle = "rgba(255, 255, 255, 0.2)";
                 ctx.stroke();
-            }
         }
+    }
     }
     for (let b of bullets) {
         let p = w2s(b.x, b.y);

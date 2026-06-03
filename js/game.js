@@ -11,10 +11,10 @@ let sel = [];
 let pendingSpawn = null;
 
 const T = {
-    soldier: { r: 1, hp: 1.5, spd: 3, range: 50, color: "#ff0", turn: 8, cost: 10 },
-    tank: { r: 2, hp: 30, spd: 5, range: 100, color: "#fa0", turn: 2, cost: 30 },
-    cannon: { r: 3, hp: 5, spd: .5, range: 100, color: "#0f0", turn: .7, cost: 50 },
-    mine: { r: 1, hp: 1, spd: 0, range: 0, color: "#888", turn: 0, cost: 5 }
+    soldier: { r: 1, hp: 1.5, spd: 3, range: 50, color: "#4a7c59", turn: 8, cost: 10 }, // Màu xanh quân đội (Olive Drab)
+    tank: { r: 2, hp: 30, spd: 5, range: 100, color: "#5d6d7e", turn: 2, cost: 30 },    // Màu xám thép (Steel Grey)
+    cannon: { r: 3, hp: 5, spd: .5, range: 100, color: "#2c3e50", turn: .7, cost: 50 },  // Màu tối đậm (Dark Slate/Black)
+    mine: { r: 1, hp: 1, spd: 0, range: 0, color: "#b22222", turn: 0, cost: 5 }         // Màu đỏ cảnh báo (Firebrick)
 };
 
 function U(type, team, x, y) {
