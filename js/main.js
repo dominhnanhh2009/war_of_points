@@ -55,6 +55,9 @@ function updateMode() {
     if (GameState.gameMode === "ai") {
         teamContainer.style.display = "inline";
         modeDisplay.innerText = "AI Mode (" + (GameState.playerTeam === 0 ? "Red" : "Blue") + ")";
+    } else if (GameState.gameMode === "aivsai") {
+        teamContainer.style.display = "none";
+        modeDisplay.innerText = "AI vs AI mode";
     } else {
         teamContainer.style.display = "none";
         modeDisplay.innerText = "Creative mode";

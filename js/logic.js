@@ -56,15 +56,21 @@ function addExplosion(x, y, r) { GameState.expl.push({ x, y, r, life: .8, max: .
 
 function update(dt) {
     // AI LOGIC
-    if (GameState.gameMode === "ai") {
-        let enemyTeam = 1 - GameState.playerTeam;
+    if (GameState.gameMode === "ai" || GameState.gameMode === "aivsai") {
+        let teamsToAi = [];
+        if (GameState.gameMode === "ai") {
+            teamsToAi.push(1 - GameState.playerTeam);
+        } else {
+            teamsToAi.push(0, 1);
+        }
+
     for (let u of GameState.units) {
-            if (u.team === enemyTeam) {
-                // AI chỉ hành động như player bình thường (cơ bản: tìm kẻ địch gần nhất và di chuyển/tấn công)
+            if (teamsToAi.includes(u.team)) {
+                // AI Logic: tìm kẻ địch gần nhất và di chuyển/tấn công
         let enemy = null;
         let nearestDist = Infinity;
         for (let v of GameState.units) {
-                    if (v.team === GameState.playerTeam) {
+                    if (v.team !== u.team) {
             let dist = Math.hypot(v.x - u.x, v.y - u.y);
             if (dist < nearestDist) { nearestDist = dist; enemy = v; }
         }
