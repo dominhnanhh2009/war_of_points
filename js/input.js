@@ -18,7 +18,7 @@ addEventListener("keydown", e => {
 
 function toggleHelp() {
     const help = document.getElementById("help");
-    help.style.display = help.style.display === "none" ? "block" : "none";
+    help.style.display = (help.style.display === "none" || help.style.display === "") ? "block" : "none";
 }
 
 c.onmousedown = e => {
