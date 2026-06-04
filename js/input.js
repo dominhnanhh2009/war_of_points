@@ -44,8 +44,15 @@ onmousemove = e => {
     lastMouseX = e.clientX;
     lastMouseY = e.clientY;
     if (middleDrag) {
-        cam.x = middleCamX - (e.clientX - middleStartX) / cam.z;
-        cam.y = middleCamY - (e.clientY - middleStartY) / cam.z;
+        let dx = (e.clientX - middleStartX) / cam.z;
+        let dy = (e.clientY - middleStartY) / cam.z;
+        let cs = Math.cos(cam.r);
+        let sn = Math.sin(cam.r);
+
+        // Rotate the delta movement by the current camera rotation
+        // So panning follows the screen, not the world grid
+        cam.x = middleCamX - (dx * cs + dy * sn);
+        cam.y = middleCamY - (-dx * sn + dy * cs);
         return;
     }
     if (!drag) return;
