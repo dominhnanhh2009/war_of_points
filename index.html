@@ -9,7 +9,7 @@
 
     <div id="ui">
         <b>War of Points – FINAL v4</b><br>
-        Creative mode • Grid • Chunk • Explosion marker
+        <span id="modeDisplay">Creative mode</span> • Grid • Chunk • Explosion marker
         <br><br>
         <div id="spawnInfo">Spawn: OFF</div>
         <button onclick="toggleHelp()">Help</button>
@@ -22,7 +22,20 @@
             FPS: <span id="statFps" style="color: #fff;">60</span>
         </div>
 
-        <div id="help">
+        <div id="help" style="display: none;">
+            <div id="settingsPanel">
+                Mode: <select id="modeSelect" onchange="updateMode()">
+                    <option value="creative">Creative</option>
+                    <option value="ai">AI vs Player</option>
+                </select>
+                <span id="teamSelectContainer" style="display:none;">
+                    Side: <select id="teamSelect" onchange="updateMode()">
+                        <option value="0">Red</option>
+                        <option value="1">Blue</option>
+                    </select>
+                </span>
+            </div>
+            <hr>
             Controls:<br>
             LMB Drag → Select<br>
             RMB → Move<br>

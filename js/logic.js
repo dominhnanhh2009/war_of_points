@@ -55,7 +55,28 @@ function solveOverlap() {
 function addExplosion(x, y, r) { expl.push({ x, y, r, life: .8, max: .8 }); }
 
 function update(dt) {
+    // AI LOGIC
+    if (gameMode === "ai") {
+        let enemyTeam = 1 - playerTeam;
     for (let u of units) {
+            if (u.team === enemyTeam) {
+                // AI chỉ hành động như player bình thường (cơ bản: tìm kẻ địch gần nhất và di chuyển/tấn công)
+        let enemy = null;
+        let nearestDist = Infinity;
+        for (let v of units) {
+                    if (v.team === playerTeam) {
+            let dist = Math.hypot(v.x - u.x, v.y - u.y);
+            if (dist < nearestDist) { nearestDist = dist; enemy = v; }
+        }
+                }
+                if (enemy) {
+                    u.tx = enemy.x;
+                    u.ty = enemy.y;
+                }
+            }
+        }
+    }
+        for (let u of units) {
         u.cool -= dt;
         let enemy = null;
         let nearestDist = Infinity;

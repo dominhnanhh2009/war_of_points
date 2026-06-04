@@ -9,6 +9,8 @@ const spawnFx = [];
 const deathFx = [];
 let sel = [];
 let pendingSpawn = null;
+let gameMode = "creative"; // "creative" | "ai"
+let playerTeam = 0; // 0 or 1
 
 const T = {
     soldier: { r: 1, hp: 1.5, spd: 3, range: 50, color: "#4a7c59", turn: 8, cost: 10 }, // Màu xanh quân đội (Olive Drab)

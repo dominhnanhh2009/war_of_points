@@ -20,6 +20,26 @@ function spawnArmy(team, xDir) {
 
 spawnArmy(0, -1); // Team 0 ở phía trái
 spawnArmy(1, 1);  // Team 1 ở phía phải
+
+function toggleHelp() {
+    let h = document.getElementById("help");
+    h.style.display = h.style.display === "block" ? "none" : "block";
+}
+function updateMode() {
+    gameMode = document.getElementById("modeSelect").value;
+    playerTeam = parseInt(document.getElementById("teamSelect").value);
+
+    let teamContainer = document.getElementById("teamSelectContainer");
+    let modeDisplay = document.getElementById("modeDisplay");
+
+    if (gameMode === "ai") {
+        teamContainer.style.display = "inline";
+        modeDisplay.innerText = "AI Mode (" + (playerTeam === 0 ? "Red" : "Blue") + ")";
+    } else {
+        teamContainer.style.display = "none";
+        modeDisplay.innerText = "Creative mode";
+    }
+}
 let lastFpsTime = performance.now();
 let frameCount = 0;
 function updateStats() {

@@ -4,6 +4,7 @@ let start, rect = null;
 let lastMouseX = 0, lastMouseY = 0;
 
 function spawnMode(type, team) {
+    if (gameMode === "ai" && team !== playerTeam) return; // Chỉ cho phép spawn phe người chơi trong AI mode
     pendingSpawn = { type, team };
     document.getElementById("spawnInfo").textContent = `Spawn: ${type} ${team ? "BLUE" : "RED"}`;
 }
@@ -87,10 +88,21 @@ c.oncontextmenu = e => {
 c.addEventListener("wheel", e => {
     if (e.ctrlKey) {
         if (e.shiftKey) cam.r += -e.deltaY * .01;
-        else cam.z = Math.max(2, Math.min(80, cam.z * Math.exp(-e.deltaY * .01)));
+        else {
+            let mouseWorldBefore = s2w(e.clientX, e.clientY);
+            cam.z = Math.max(2, Math.min(80, cam.z * Math.exp(-e.deltaY * .01)));
+            let mouseWorldAfter = s2w(e.clientX, e.clientY);
+            cam.x += mouseWorldBefore.x - mouseWorldAfter.x;
+            cam.y += mouseWorldBefore.y - mouseWorldAfter.y;
+        }
     } else {
-        cam.x += e.deltaX / cam.z;
-        cam.y += e.deltaY / cam.z;
+        let cs = Math.cos(cam.r);
+        let sn = Math.sin(cam.r);
+        let dx = e.deltaX / cam.z;
+        let dy = e.deltaY / cam.z;
+        // Panning in world space relative to camera rotation
+        cam.x += (dx * cs + dy * sn);
+        cam.y += (-dx * sn + dy * cs);
     }
     e.preventDefault();
 }, { passive: false });
