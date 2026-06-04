@@ -66,18 +66,15 @@ function update(dt) {
 
     for (let u of GameState.units) {
             if (teamsToAi.includes(u.team)) {
-                // AI Logic: tìm kẻ địch gần nhất và di chuyển/tấn công
-        let enemy = null;
-        let nearestDist = Infinity;
-        for (let v of GameState.units) {
-                    if (v.team !== u.team) {
-            let dist = Math.hypot(v.x - u.x, v.y - u.y);
-            if (dist < nearestDist) { nearestDist = dist; enemy = v; }
+                // AI Logic: sử dụng contract CustomAI.
+                // Nếu người dùng không định nghĩa, đơn vị sẽ đứng yên (không có hành động mặc định)
+                if (window.CustomAI && typeof window.CustomAI.decide === 'function') {
+                    let action = window.CustomAI.decide(u, GameState.units);
+
+                if (action && typeof action.tx === 'number' && typeof action.ty === 'number') {
+                    u.tx = action.tx;
+                    u.ty = action.ty;
         }
-                }
-                if (enemy) {
-                    u.tx = enemy.x;
-                    u.ty = enemy.y;
                 }
             }
         }
