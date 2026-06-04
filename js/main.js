@@ -9,7 +9,7 @@ function spawnArmy(team, xDir) {
         GameState.units.push(createUnit("tank", team, xDir * 140, (i - 2) * 40));
     }
     // Pháo
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 0; i++) {
         GameState.units.push(createUnit("cannon", team, xDir * 160, (i - 1) * 60));
     }
     // Mìn

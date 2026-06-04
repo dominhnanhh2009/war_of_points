@@ -62,7 +62,7 @@ var GameState = {
 // Định nghĩa dữ liệu tĩnh
 var UnitTypes = {
     soldier: { r: 1, hp: 1.5, spd: 3, range: 50, color: "#4a7c59", turn: 8, cost: 10 },
-    tank: { r: 2, hp: 30, spd: 5, range: 100, color: "#5d6d7e", turn: 2, cost: 30 },
+    tank: { r: 2, hp: 30, spd: 5, range: 70, color: "#5d6d7e", turn: 2, cost: 30 },
     cannon: { r: 3, hp: 5, spd: .5, range: 100, color: "#2c3e50", turn: .7, cost: 50 },
     mine: { r: 1, hp: 1, spd: 0, range: 0, color: "#b22222", turn: 0, cost: 5 }
 };
@@ -83,3 +83,4 @@ function createUnit(type, team, x, y) {
         cool: 0 
     };
 }
+
