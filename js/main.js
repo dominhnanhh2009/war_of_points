@@ -2,19 +2,19 @@
 function spawnArmy(team, xDir) {
     // Quân lính
     for (let i = 0; i < 40; i++) {
-        units.push(U("soldier", team, xDir * (150 + Math.random() * 50), (Math.random() - 0.5) * 200));
+        GameState.units.push(createUnit("soldier", team, xDir * (150 + GameState.random() * 50), (GameState.random() - 0.5) * 200));
     }
     // Xe tăng
     for (let i = 0; i < 5; i++) {
-        units.push(U("tank", team, xDir * 140, (i - 2) * 40));
+        GameState.units.push(createUnit("tank", team, xDir * 140, (i - 2) * 40));
     }
     // Pháo
     for (let i = 0; i < 3; i++) {
-        units.push(U("cannon", team, xDir * 160, (i - 1) * 60));
+        GameState.units.push(createUnit("cannon", team, xDir * 160, (i - 1) * 60));
     }
     // Mìn
     for (let i = 0; i < 10; i++) {
-        units.push(U("mine", team, xDir * 50, (i - 5) * 30));
+        GameState.units.push(createUnit("mine", team, xDir * 50, (i - 5) * 30));
     }
 }
 
@@ -25,16 +25,36 @@ function toggleHelp() {
     let h = document.getElementById("help");
     h.style.display = h.style.display === "block" ? "none" : "block";
 }
+function saveGame() {
+    let data = GameState.save();
+    let blob = new Blob([data], { type: "application/json" });
+    let a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "savegame.json";
+    a.click();
+}
+
+function loadGame(event) {
+    let file = event.target.files[0];
+    if (!file) return;
+    let reader = new FileReader();
+    reader.onload = function(e) {
+        GameState.load(e.target.result);
+        alert("Game loaded!");
+    };
+    reader.readAsText(file);
+}
+
 function updateMode() {
-    gameMode = document.getElementById("modeSelect").value;
-    playerTeam = parseInt(document.getElementById("teamSelect").value);
+    GameState.gameMode = document.getElementById("modeSelect").value;
+    GameState.playerTeam = parseInt(document.getElementById("teamSelect").value);
 
     let teamContainer = document.getElementById("teamSelectContainer");
     let modeDisplay = document.getElementById("modeDisplay");
 
-    if (gameMode === "ai") {
+    if (GameState.gameMode === "ai") {
         teamContainer.style.display = "inline";
-        modeDisplay.innerText = "AI Mode (" + (playerTeam === 0 ? "Red" : "Blue") + ")";
+        modeDisplay.innerText = "AI Mode (" + (GameState.playerTeam === 0 ? "Red" : "Blue") + ")";
     } else {
         teamContainer.style.display = "none";
         modeDisplay.innerText = "Creative mode";
@@ -50,9 +70,9 @@ function updateStats() {
         frameCount = 0;
         lastFpsTime = now;
     }
-    document.getElementById("statUnits").innerText = units.length;
-    document.getElementById("statRed").innerText = units.filter(u => u.team === 0).length;
-    document.getElementById("statBlue").innerText = units.filter(u => u.team === 1).length;
+    document.getElementById("statUnits").innerText = GameState.units.length;
+    document.getElementById("statRed").innerText = GameState.units.filter(u => u.team === 0).length;
+    document.getElementById("statBlue").innerText = GameState.units.filter(u => u.team === 1).length;
 }
 
 let last = performance.now();

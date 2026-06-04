@@ -13,6 +13,9 @@
         <br><br>
         <div id="spawnInfo">Spawn: OFF</div>
         <button onclick="toggleHelp()">Help</button>
+        <button onclick="saveGame()">Save Game</button>
+        <input type="file" id="loadInput" style="display:none" onchange="loadGame(event)">
+        <button onclick="document.getElementById('loadInput').click()">Load Game</button>
 
         <div id="statsPanel" style="margin-top: 10px; font-size: 12px; border-top: 1px solid #444; padding-top: 5px;">
             <b style="color: #ccc;">Stats</b><br>
@@ -63,12 +66,11 @@
     <canvas id="cv"></canvas>
 
     <!-- JS Files -->
-    <script src="js/game.js"></script>
+    <script src="js/state.js"></script>
     <script src="js/logic.js"></script>
     <script src="js/renderer.js"></script>
     <script src="js/input.js"></script>
     <script src="js/main.js"></script>
-
 </body>
 </html>
 

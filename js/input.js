@@ -4,8 +4,8 @@ let start, rect = null;
 let lastMouseX = 0, lastMouseY = 0;
 
 function spawnMode(type, team) {
-    if (gameMode === "ai" && team !== playerTeam) return; // Chỉ cho phép spawn phe người chơi trong AI mode
-    pendingSpawn = { type, team };
+    if (GameState.gameMode === "ai" && team !== GameState.playerTeam) return; // Chỉ cho phép spawn phe người chơi trong AI mode
+    GameState.pendingSpawn = { type, team };
     document.getElementById("spawnInfo").textContent = `Spawn: ${type} ${team ? "BLUE" : "RED"}`;
 }
 
@@ -25,14 +25,14 @@ c.onmousedown = e => {
     if (e.button === 1) {
         middleDrag = true;
         middleStartX = e.clientX; middleStartY = e.clientY;
-        middleCamX = cam.x; middleCamY = cam.y;
+        middleCamX = GameState.cam.x; middleCamY = GameState.cam.y;
         e.preventDefault(); return;
     }
     if (e.button !== 0) return;
-    if (pendingSpawn) {
+    if (GameState.pendingSpawn) {
         let p = s2w(e.clientX, e.clientY);
-        spawnAt(pendingSpawn.type, pendingSpawn.team, p.x, p.y);
-        pendingSpawn = null;
+        spawnAt(GameState.pendingSpawn.type, GameState.pendingSpawn.team, p.x, p.y);
+        GameState.pendingSpawn = null;
         document.getElementById("spawnInfo").textContent = "Spawn: OFF";
         return;
     }
@@ -45,15 +45,15 @@ onmousemove = e => {
     lastMouseX = e.clientX;
     lastMouseY = e.clientY;
     if (middleDrag) {
-        let dx = (e.clientX - middleStartX) / cam.z;
-        let dy = (e.clientY - middleStartY) / cam.z;
-        let cs = Math.cos(cam.r);
-        let sn = Math.sin(cam.r);
+        let dx = (e.clientX - middleStartX) / GameState.cam.z;
+        let dy = (e.clientY - middleStartY) / GameState.cam.z;
+        let cs = Math.cos(GameState.cam.r);
+        let sn = Math.sin(GameState.cam.r);
 
         // Rotate the delta movement by the current camera rotation
         // So panning follows the screen, not the world grid
-        cam.x = middleCamX - (dx * cs + dy * sn);
-        cam.y = middleCamY - (-dx * sn + dy * cs);
+        GameState.cam.x = middleCamX - (dx * cs + dy * sn);
+        GameState.cam.y = middleCamY - (-dx * sn + dy * cs);
         return;
     }
     if (!drag) return;
@@ -69,11 +69,11 @@ onmouseup = e => {
     if (middleDrag) { middleDrag = false; return; }
     if (!drag) return;
     drag = false;
-    sel = [];
+    GameState.sel = [];
     if (rect.w > 6 || rect.h > 6) {
-        for (let u of units) {
+        for (let u of GameState.units) {
             let p = w2s(u.x, u.y);
-            if (p.x >= rect.x && p.x <= rect.x + rect.w && p.y >= rect.y && p.y <= rect.y + rect.h) sel.push(u);
+            if (p.x >= rect.x && p.x <= rect.x + rect.w && p.y >= rect.y && p.y <= rect.y + rect.h) GameState.sel.push(u);
         }
     }
     rect = null;
@@ -82,27 +82,27 @@ onmouseup = e => {
 c.oncontextmenu = e => {
     e.preventDefault();
     let p = s2w(e.clientX, e.clientY);
-    for (let u of sel) { u.tx = p.x; u.ty = p.y; }
+    for (let u of GameState.sel) { u.tx = p.x; u.ty = p.y; }
 };
 
 c.addEventListener("wheel", e => {
     if (e.ctrlKey) {
-        if (e.shiftKey) cam.r += -e.deltaY * .01;
+        if (e.shiftKey) GameState.cam.r += -e.deltaY * .01;
         else {
             let mouseWorldBefore = s2w(e.clientX, e.clientY);
-            cam.z = Math.max(2, Math.min(80, cam.z * Math.exp(-e.deltaY * .01)));
+            GameState.cam.z = Math.max(2, Math.min(80, GameState.cam.z * Math.exp(-e.deltaY * .01)));
             let mouseWorldAfter = s2w(e.clientX, e.clientY);
-            cam.x += mouseWorldBefore.x - mouseWorldAfter.x;
-            cam.y += mouseWorldBefore.y - mouseWorldAfter.y;
+            GameState.cam.x += mouseWorldBefore.x - mouseWorldAfter.x;
+            GameState.cam.y += mouseWorldBefore.y - mouseWorldAfter.y;
         }
     } else {
-        let cs = Math.cos(cam.r);
-        let sn = Math.sin(cam.r);
-        let dx = e.deltaX / cam.z;
-        let dy = e.deltaY / cam.z;
+        let cs = Math.cos(GameState.cam.r);
+        let sn = Math.sin(GameState.cam.r);
+        let dx = e.deltaX / GameState.cam.z;
+        let dy = e.deltaY / GameState.cam.z;
         // Panning in world space relative to camera rotation
-        cam.x += (dx * cs + dy * sn);
-        cam.y += (-dx * sn + dy * cs);
+        GameState.cam.x += (dx * cs + dy * sn);
+        GameState.cam.y += (-dx * sn + dy * cs);
     }
     e.preventDefault();
 }, { passive: false });
